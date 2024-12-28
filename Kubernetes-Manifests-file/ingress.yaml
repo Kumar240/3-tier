@@ -4,14 +4,15 @@ metadata:
   name: mainlb
   namespace: three-tier
   annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing  # Ensure ALB is public
+    alb.ingress.kubernetes.io/scheme: internal  # Ensure ALB is internal
     alb.ingress.kubernetes.io/target-type: ip  # Use IP target type
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'  # Listen on port 80
-    #alb.ingress.kubernetes.io/subnets: "subnet-0aa439b4ddafcca10,subnet-0b95df318219145ca,subnet-0ccca36474902829a"  # Add your subnets for ALB
+    alb.ingress.kubernetes.io/load-balancer-attributes: "access_logs.s3.enabled=false"  # Disable access logs for simplicity
 spec:
   ingressClassName: alb  # Use ALB ingress controller
   rules:
-    - http:
+    - host: ""  # Allow access through the internal ELB DNS
+      http:
         paths:
           - path: /api
             pathType: Prefix
