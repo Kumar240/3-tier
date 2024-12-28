@@ -46,19 +46,19 @@ spec:
           httpGet:
             path: /healthz
             port: 3500
-          initialDelaySeconds: 2
-          periodSeconds: 5
+          initialDelaySeconds: 5
+          periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /ready
             port: 3500
           initialDelaySeconds: 5
-          periodSeconds: 5
+          periodSeconds: 10
           successThreshold: 1
         startupProbe:
           httpGet:
             path: /started
             port: 3500
-          initialDelaySeconds: 0
+          initialDelaySeconds: 5
           periodSeconds: 10
           failureThreshold: 30
