@@ -1,4 +1,4 @@
-resource "aws_security_group" "security_groups" {
+resource "aws_security_group" "eks-cluster-sg" {
   # Define the name and VPC ID of the security group
   name        = "Eks-Cluster-SG"                            # Name of the security group
   vpc_id      = module.vpc.vpc_id                       # VPC ID to which the security group belongs
