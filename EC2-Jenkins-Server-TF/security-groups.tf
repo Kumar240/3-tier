@@ -1,6 +1,6 @@
-resource "aws_security_group" "security_groups" {
+resource "aws_security_group" "Jenkins-SG" {
   # Define the name and VPC ID of the security group
-  name        = "Jenkins-TF"                            # Name of the security group
+  name        = "Jenkins-SG-TF"                            # Name of the security group
   vpc_id      = module.vpc.vpc_id                       # VPC ID to which the security group belongs
   description = "Allowing Jenkins, Sonarqube, SSH Access" # Description of the security group
   

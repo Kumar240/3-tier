@@ -25,21 +25,21 @@ pipeline {
         }
         stage('Init') {
             steps {
-                withAWS(credentials: 'aws-creds', region: 'ap-south-1') {
+                withAWS(credentials: 'aws-key', region: 'ap-south-1') {
                     sh 'terraform -chdir=EKS-Cluster-TF/ init' // Initialize the Terraform working directory
                 }
             }
         }
         stage('Validate') {
             steps {
-                withAWS(credentials: 'aws-creds', region: 'ap-south-1') {
+                withAWS(credentials: 'aws-key', region: 'ap-south-1') {
                     sh 'terraform -chdir=EKS-Cluster-TF/ validate' // Validate the Terraform configuration files
                 }
             }
         }
         stage('Action') {
             steps {
-                withAWS(credentials: 'aws-creds', region: 'ap-south-1') {
+                withAWS(credentials: 'aws-key', region: 'ap-south-1') {
                     script {    
                         if (params.Terraform_Action == 'plan') {
                             sh "terraform -chdir=EKS-Cluster-TF/ plan " 
