@@ -27,8 +27,5 @@ spec:
       - name: frontend
         image: 954976293772.dkr.ecr.ap-south-1.amazonaws.com/frontend:16
         imagePullPolicy: Always
-        env:
-        - name: BACKEND_URL
-          value: "http://ab2c9180a0b654c91a7122999b632f93-56853219.ap-south-1.elb.amazonaws.com:3500"
         ports:
         - containerPort: 3000

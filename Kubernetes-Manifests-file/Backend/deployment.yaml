@@ -40,6 +40,8 @@ spec:
               secretKeyRef:
                 name: mongo-sec
                 key: password
+          - name: API_BASE_URL
+            value: "http://ab2c9180a0b654c91a7122999b632f93-56853219.ap-south-1.elb.amazonaws.com:3500"
         ports:
         - containerPort: 3500
         livenessProbe:
