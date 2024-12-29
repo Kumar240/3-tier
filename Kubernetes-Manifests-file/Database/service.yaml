@@ -4,6 +4,7 @@ metadata:
   namespace: three-tier
   name: mongodb-svc
 spec:
+  type: LoadBalancer
   selector:
     app: mongodb
   ports:
@@ -11,4 +12,3 @@ spec:
     protocol: TCP
     port: 27017
     targetPort: 27017
-    type: LoadBalancer
