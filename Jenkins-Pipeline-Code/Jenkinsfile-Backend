@@ -6,7 +6,7 @@ pipeline {
     environment  {
         SCANNER_HOME=tool 'sonar-scanner'
         AWS_ACCOUNT_ID = credentials('ACCOUNT_ID')
-        AWS_ECR_REPO_NAME = credentials('ECR_BACKEND')
+        AWS_ECR_REPO_NAME = credentials('ECR_FRONTEND')
         AWS_DEFAULT_REGION = 'ap-south-1'
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/"
     }
@@ -16,18 +16,19 @@ pipeline {
                 cleanWs()
             }
         }
-        stage('Checkout from Git') {
+       stage('Checkout from Git') {
             steps {
                 git branch: 'main', credentialsId: 'github-token-sceretext', url: 'https://github.com/Bazith1/Three-Tier-Project.git'
             }
         }
+        
         stage('Sonarqube Analysis') {
             steps {
-                dir('Application-Code/backend') {
+                dir('Application-Code/frontend') {
                     withSonarQubeEnv('sonar-server') {
                         sh ''' $SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.projectName=Backend \
-                        -Dsonar.projectKey=Backend '''
+                        -Dsonar.projectName=Frontend \
+                        -Dsonar.projectKey=Frontend '''
                     }
                 }
             }
@@ -39,10 +40,9 @@ pipeline {
                 }
             }
         }
-        
         stage('OWASP Dependency-Check Scan') {
             steps {
-                dir('Application-Code/backend') {
+                dir('Application-Code/frontend') {
                     dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
                     dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
                 }
@@ -50,7 +50,7 @@ pipeline {
         }
         stage('Trivy File Scan') {
             steps {
-                dir('Application-Code/backend') {
+                dir('Application-Code/frontend') {
                     sh 'trivy fs . > trivyfs.txt'
                 }
             }
@@ -58,7 +58,7 @@ pipeline {
         stage("Docker Image Build") {
             steps {
                 script {
-                    dir('Application-Code/backend') {
+                    dir('Application-Code/frontend') {
                             sh 'docker system prune -f'
                             sh 'docker container prune -f'
                             sh 'docker build -t ${AWS_ECR_REPO_NAME} .'
@@ -91,14 +91,14 @@ pipeline {
                 GIT_USER_NAME = "Bazith1"
             }
             steps {
-                dir('Kubernetes-Manifests-file/Backend') {
+                dir('Kubernetes-Manifests-file/Frontend') {
                     withCredentials([string(credentialsId: 'github-token-sceretext', variable: 'GITHUB_TOKEN')]) {
                         sh '''
                             git config user.email "mohammedbazith.com@gmail.com"
                             git config user.name "Bazith1"
                             BUILD_NUMBER=${BUILD_NUMBER}
                             echo $BUILD_NUMBER
-                            imageTag=$(grep -oP '(?<=backend:)[^ ]+' deployment.yaml)
+                            imageTag=$(grep -oP '(?<=frontend:)[^ ]+' deployment.yaml)
                             echo $imageTag
                             sed -i "s/${AWS_ECR_REPO_NAME}:${imageTag}/${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}/" deployment.yaml
                             git add deployment.yaml
