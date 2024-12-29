@@ -27,8 +27,5 @@ spec:
       - name: frontend
         image: 954976293772.dkr.ecr.ap-south-1.amazonaws.com/frontend:16
         imagePullPolicy: Always
-        env:
-          - name: REACT_APP_BACKEND_URL
-            value: "http://amanpathakdevops.study/api/tasks"
         ports:
         - containerPort: 3000
