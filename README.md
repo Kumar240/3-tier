@@ -1,5 +1,8 @@
 # Advanced DevSecOps Pipeline with Kubernetes, AWS, and GitOps
 
+![Three-Tier Architecture](https://raw.githubusercontent.com/Bazith1/Three-Tier-Project/main/Three-Tier---yellow.gif "Three-Tier Architecture Demo")
+
+
 ## Project Introduction
 Welcome to the End-to-End DevSecOps Kubernetes Project guide! This comprehensive project walks you through setting up a robust Three-Tier Architecture on AWS using Kubernetes, DevOps best practices, and advanced security measures. Gain hands-on experience in deploying, securing, and monitoring a scalable application environment.
 
