@@ -6,7 +6,8 @@ module "eks" {
   enable_irsa                            = true #Determines whether to create an OpenID Connect Provider for EKS to enable IRSA
   vpc_id                                 = module.vpc.vpc_id
   subnet_ids                             = module.vpc.private_subnets
-  cluster_security_group_id              = [aws_security_group" "eks-cluster-sg"]
+  cluster_security_group_id              = aws_security_group.eks-cluster-sg.id
+
   cluster_endpoint_public_access         = false  # Disable public API server access
   cluster_endpoint_private_access        = true  # Enable private access within VPC
   enable_cluster_creator_admin_permissions = true
@@ -38,7 +39,7 @@ module "eks" {
         },
         {
             name    = "aws-ebs-csi-driver"
-            version = "v1.30.0-eksbuild.1"
+           version = "v1.30.0-eksbuild.1"
         }
         # Add more addons as needed
 
